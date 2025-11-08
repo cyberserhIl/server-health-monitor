@@ -1,8 +1,9 @@
-# 🖥️ Server Health Monitor (v1.1)
+# 🖥️ Server Health Monitor (v1.2)
 
 **Monitor CPU, RAM, and disk usage** – A simple script to check server health.
 
 ## ✨ Features
+
 
 - **CPU usage check** – Warns at ≥80%, critical at ≥90%.
 - **RAM usage check** – Warns at ≥75%, critical at ≥90%.
@@ -25,16 +26,23 @@ sudo cp server_health_monitor.sh /usr/local/bin/server-health-monitor
 
 ## 📖 Usage
 
+Run the monitor:
+
 ```bash
 server-health-monitor
 ```
 
-### Example:
+### Example output:
 
 ```bash
+===========================================
+   Server Health Monitor started
+   Date: 2025-11-08 14:52:30
+===========================================
+
 CPU[OK]: 24%
 RAM[WARNING]: 78%
-Disk[CRITICAL]: 95%!
+Disk[CRITICAL]: 95%
 ```
 
 Each section shows:
@@ -42,6 +50,13 @@ Each section shows:
 - **[OK]** – Normal
 - **[WARNING]** – Approaching limit
 - **[CRITICAL]** – Immediate attention required
+
+### Options:
+
+| Flag              | Description         |
+| ----------------- | ------------------- |
+| `-h`, `--help`    | Show help message   |
+| `-v`, `--version` | Show script version |
 
 ## ⚙️ How It Works
 

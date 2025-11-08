@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-# Server Health Monitor v1.1
+# Server Health Monitor v1.2
 # Author: Serhii Chornobai
 # Date created: 07.11.2025
-# Last modified: 07.11.2025
+# Last modified: 08.11.2025
 
 set -euo pipefail # Exit on error, undefined vars, pipe failures
 
@@ -12,6 +12,50 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m'
+
+# Flags
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -v|--version)
+            echo "Server Health Monitor: version 1.2"
+            exit 0
+            ;;
+				-h|--help)
+						echo
+						echo "Server Health Monitor v1.2"
+						echo "Author: Serhii Chornobai"
+						echo "Usage: $0 [OPTIONS]"
+						echo
+						echo "Options:"
+						echo "  -h, --help        Show this help message and exit"
+						echo "  -v, --version     Show script version and exit"
+						echo
+						echo "This script monitors server health:"
+						echo "  - CPU usage"
+						echo "  - RAM usage"
+						echo "  - Disk usage"
+						echo
+						echo "Output is color-coded:"
+						echo -e "  ${RED}CRITICAL${NC} - Usage above critical threshold"
+						echo -e "  ${YELLOW}WARNING${NC} - Usage above warning threshold"
+						echo -e "  ${GREEN}OK${NC} - Usage below warning threshold"
+						echo
+						exit 0
+						;;
+        *)
+            echo "Unknown option: $1"
+            ;;
+    esac
+    shift
+done
+
+# Start output
+
+echo "==========================================="
+echo "   Server Health Monitor started"
+echo "   Date: $(date '+%Y-%m-%d %H:%M:%S')"
+echo "==========================================="
+echo
 
 # CPU
 
@@ -40,7 +84,7 @@ fi
 
 # RAM
 if ! command -v free &> /dev/null; then
-  echo "Error: 'free' command not found" >&2
+  echo -e "${RED}Error: 'free' command not found${NC}" >&2
   exit 1
 fi
 ram_usage=$(free | awk '/^Mem:/ {print int($3*100/$2)}')
@@ -55,7 +99,7 @@ fi
 
 # Disk
 if ! command -v df &> /dev/null; then
-  echo "Error: 'df' command not found" >&2
+  echo -e "${RED}Error: 'df' command not found${NC}" >&2
   exit 1
 fi
 disk_usage=$(df -h / | awk 'NR==2 {gsub("%","",$5); print $5}')
