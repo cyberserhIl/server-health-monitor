@@ -71,6 +71,10 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -n "$OUTPUT_FILE" ]]; then
+    if ! touch "$OUTPUT_FILE" 2>/dev/null; then
+        echo -e "${RED}Error: Cannot write to $OUTPUT_FILE${NC}" >&2
+        exit 1
+    fi
     exec > >(tee -a "$OUTPUT_FILE") 2>&1
 fi
 
