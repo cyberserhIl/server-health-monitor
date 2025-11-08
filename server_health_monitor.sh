@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Server Health Monitor v1.2
+# Server Health Monitor v1.3
 # Author: Serhii Chornobai
 # Date created: 07.11.2025
 # Last modified: 08.11.2025
@@ -13,22 +13,26 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m'
 
+# Vars
+OUTPUT_FILE=""
+
 # Flags
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -v|--version)
-            echo "Server Health Monitor: version 1.2"
+            echo "Server Health Monitor: version 1.3"
             exit 0
             ;;
 				-h|--help)
 						echo
-						echo "Server Health Monitor v1.2"
+						echo "Server Health Monitor v1.3"
 						echo "Author: Serhii Chornobai"
 						echo "Usage: $0 [OPTIONS]"
 						echo
 						echo "Options:"
 						echo "  -h, --help        Show this help message and exit"
 						echo "  -v, --version     Show script version and exit"
+						echo "  -f, --file FILE   Save output to file"
 						echo
 						echo "This script monitors server health:"
 						echo "  - CPU usage"
@@ -42,15 +46,37 @@ while [[ $# -gt 0 ]]; do
 						echo
 						exit 0
 						;;
+        -f|--file)
+            if [[ -n "${2-}" && "${2:0:1}" != "-" ]]; then
+                OUTPUT_FILE="$2"
+                shift
+            else
+                echo -e "${RED}Error:${NC} output file name not specified for -f / --file" >&2
+                exit 1
+            fi
+            ;;
+        -f=*|--file=*)
+            OUTPUT_FILE="${1#*=}"
+            if [[ -z "$OUTPUT_FILE" ]]; then
+                echo -e "${RED}Error:${NC} output file name not specified for -f / --file" >&2
+                exit 1
+            fi
+            ;;
         *)
-            echo "Unknown option: $1"
+            echo -e "${RED}Error:${NC} Unknown option: $1" >&2
+            exit 1
             ;;
     esac
     shift
 done
 
+if [[ -n "$OUTPUT_FILE" ]]; then
+    exec > >(tee -a "$OUTPUT_FILE") 2>&1
+fi
+
 # Start output
 
+echo
 echo "==========================================="
 echo "   Server Health Monitor started"
 echo "   Date: $(date '+%Y-%m-%d %H:%M:%S')"

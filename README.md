@@ -1,13 +1,14 @@
-# 🖥️ Server Health Monitor (v1.2)
+# 🖥️ Server Health Monitor (v1.3)
 
-**Monitor CPU, RAM, and disk usage** – A simple script to check server health.
+**Monitor CPU, RAM, and disk usage** – A lightweight Bash utility to check and log your server’s health status.
 
 ## ✨ Features
 
 
-- **CPU usage check** – Warns at ≥80%, critical at ≥90%.
-- **RAM usage check** – Warns at ≥75%, critical at ≥90%.
-- **Disk usage check** – Warns at ≥85%, critical at ≥95%.
+- **CPU usage check** - Warns at ≥80%, critical at ≥90%.
+- **RAM usage check** - Warns at ≥75%, critical at ≥90%.
+- **Disk usage check** - Warns at ≥85%, critical at ≥95%.
+- **Output to file** - Save monitor output to a file using `-f` or `--file`.
 
 ## 🧩 Requirements
 
@@ -32,6 +33,24 @@ Run the monitor:
 server-health-monitor
 ```
 
+Save output to a file:
+
+```bash
+server-health-monitor -f health_log.txt
+```
+
+Show version:
+
+```bash
+server-health-monitor -v
+```
+
+Show help:
+
+```bash
+server-health-monitor -h
+```
+
 ### Example output:
 
 ```bash
@@ -47,28 +66,32 @@ Disk[CRITICAL]: 95%
 
 Each section shows:
 
-- **[OK]** – Normal
-- **[WARNING]** – Approaching limit
-- **[CRITICAL]** – Immediate attention required
+- **[OK]** - Normal
+- **[WARNING]** - Approaching limit
+- **[CRITICAL]** - Immediate attention required
 
 ### Options:
 
-| Flag              | Description         |
-| ----------------- | ------------------- |
-| `-h`, `--help`    | Show help message   |
-| `-v`, `--version` | Show script version |
+| Flag                | Description                  |
+| ------------------- | ---------------------------- |
+| `-h`, `--help`      | Show help message and exit   |
+| `-v`, `--version`   | Show script version and exit |
+| `-f`, `--file FILE` | Save output to a file        |
+
 
 ## ⚙️ How It Works
 
-* **CPU** – Calculates usage from `/proc/stat` delta over 1 second
-* **RAM** – Uses `free` to determine memory load
-* **Disk** – Reads root (`/`) partition usage via `df -h`
+* **CPU** - Calculates usage from `/proc/stat` delta over 1 second
+* **RAM** - Uses `free` to determine memory load
+* **Disk** - Reads root (`/`) partition usage via `df -h`
+* **Output Redirection** - If `-f` is provided, results are also saved using `tee`
 
 ## ⚠️ Troubleshooting
 
 - **Error: command not found** → Check `/usr/local/bin` is in your `$PATH`
 - **Permission denied** → Run `chmod +x server_health_monitor.sh`
-- **`free: command not found`** → Install `procps` (Ubuntu/Debian) or `procps-ng` (Fedora/Arch)
+- **free: command not found** → Install `procps` (Ubuntu/Debian) or `procps-ng` (Fedora/Arch)
+- **No output file created** → Check that the specified directory is writable
 
 ## 🤝 Contributing
 
