@@ -19,7 +19,7 @@
 ## 🚀 Installation
 
 ```bash
-git clone https://github.com/cyberserhIl/server-health-monitor.git
+git clone https://github.com/forgot2sanitize/server-health-monitor.git
 cd server-health-monitor
 chmod +x server_health_monitor.sh
 sudo cp server_health_monitor.sh /usr/local/bin/server-health-monitor
@@ -99,4 +99,4 @@ Pull requests and suggestions are welcome.
 
 ## 🪪 License
 
-MIT © [Serhii Chornobai](https://github.com/cyberserhIl)
+MIT © [Serhii Chornobai](https://github.com/forgot2sanitize)
